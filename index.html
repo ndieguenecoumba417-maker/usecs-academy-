@@ -20,4 +20,121 @@ input,select{width:100%;margin-top:8px}
 nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#1b0633;border-top:3px solid #ff7a00}
 nav button{flex:1;background:none;border-radius:0;margin:0;padding:12px 2px;font-size:11px;color:#fff}
 nav button.on{background:#ff7a00}
-.ball{font-size:70px;text-align:cent
+.ball{font-size:70px;text-align:center}
+</style>
+</head>
+<body>
+<header><h1>🏀 USECS ACADEMY</h1><p>L'appli de basket 100 % gratuite</p></header>
+
+<section id="accueil" class="on">
+  <div class="ball">🏀</div>
+  <div class="card"><h3>Bienvenue !</h3>Entraîne-toi, progresse et deviens un meilleur basketteur ou une meilleure basketteuse.</div>
+  <div class="card"><h3>Citation du jour</h3><span id="citation"></span></div>
+  <button onclick="aller('entrainements')">Commencer un entraînement</button>
+</section>
+
+<section id="entrainements">
+  <h2>Entraînements</h2><br>
+  <div class="card"><h3>Dribble</h3>10 min main droite, 10 min main gauche, puis entre les jambes.</div>
+  <div class="card"><h3>Tir</h3>50 tirs près du panier, 50 à mi-distance, 30 lancers francs.</div>
+  <div class="card"><h3>Passe</h3>Passes à deux mains contre un mur : 100 répétitions.</div>
+  <div class="card"><h3>Défense</h3>Glissements latéraux : 5 séries de 30 secondes.</div>
+  <div class="card"><h3>Vitesse</h3>10 sprints de 20 mètres avec 30 secondes de repos.</div>
+  <div class="card"><h3>Cardio</h3>20 minutes de footing ou de corde à sauter.</div>
+</section>
+
+<section id="programmes">
+  <h2>Programmes</h2><br>
+  <div class="card"><h3>Débutant (3 séances/semaine)</h3>Dribble de base, tirs près du panier, 15 min de cardio.</div>
+  <div class="card"><h3>Intermédiaire (4 séances/semaine)</h3>Dribble varié, tirs en mouvement, défense, sprints.</div>
+  <div class="card"><h3>Confirmé (5 séances/semaine)</h3>Tirs sous pression, 1 contre 1, musculation et cardio intense.</div>
+</section>
+
+<section id="progression">
+  <h2>Progression</h2>
+  <div class="card">
+    <h3>Ajouter une séance</h3>
+    <select id="type"><option>Dribble</option><option>Tir</option><option>Passe</option><option>Défense</option><option>Vitesse</option><option>Cardio</option></select>
+    <input id="minutes" type="number" placeholder="Durée en minutes">
+    <button onclick="ajouter()">Enregistrer</button>
+  </div>
+  <div class="card"><h3>Total</h3><span id="total"></span></div>
+  <div id="historique"></div>
+  <button onclick="effacer()">Tout effacer</button>
+</section>
+
+<section id="conseils">
+  <h2>Conseils</h2><br>
+  <div class="card"><h3>Motivation</h3>La régularité bat le talent. Même 20 minutes par jour font la différence.</div>
+  <div class="card"><h3>Nutrition sportive</h3>Bois de l'eau, mange des fruits, des légumes et des protéines. Évite trop de sucre.</div>
+  <div class="card"><h3>Préparation physique</h3>Échauffe-toi 10 minutes avant et étire-toi après chaque séance. Dors bien.</div>
+</section>
+
+<section id="actus">
+  <h2>Actualités</h2><br>
+  <div class="card"><h3>Bienvenue sur USECS ACADEMY</h3>Les premières actualités arrivent bientôt.</div>
+  <div class="card"><h3>Événements</h3>Tournois et matchs à venir : reste connecté !</div>
+</section>
+
+<section id="profil">
+  <h2>Profil</h2>
+  <div class="card">
+    <input id="nom" placeholder="Ton nom">
+    <select id="poste"><option>Meneur</option><option>Arrière</option><option>Ailier</option><option>Ailier fort</option><option>Pivot</option></select>
+    <input id="niveau" placeholder="Ton niveau (débutant, intermédiaire, confirmé)">
+    <button onclick="sauverProfil()">Enregistrer mon profil</button>
+  </div>
+  <div class="card" id="fiche"></div>
+</section>
+
+<nav>
+  <button onclick="aller('accueil')" class="on">🏠<br>Accueil</button>
+  <button onclick="aller('entrainements')">🏀<br>Entraîn.</button>
+  <button onclick="aller('programmes')">📋<br>Progr.</button>
+  <button onclick="aller('progression')">📈<br>Progrès</button>
+  <button onclick="aller('conseils')">💡<br>Conseils</button>
+  <button onclick="aller('actus')">📰<br>Actus</button>
+  <button onclick="aller('profil')">👤<br>Profil</button>
+</nav>
+
+<script>
+var ids=['accueil','entrainements','programmes','progression','conseils','actus','profil'];
+function aller(id){
+  document.querySelectorAll('section').forEach(function(s){s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  document.querySelectorAll('nav button').forEach(function(b,i){b.classList.toggle('on',ids[i]===id)});
+  window.scrollTo(0,0);
+}
+var citations=["Le travail bat le talent quand le talent ne travaille pas.","Chaque tir manqué te rapproche du prochain panier.","Les champions s'entraînent quand personne ne regarde.","Crois en toi et ne lâche rien."];
+document.getElementById('citation').textContent=citations[new Date().getDate()%citations.length];
+function lire(cle,def){try{return JSON.parse(localStorage.getItem(cle))||def}catch(e){return def}}
+function ecrire(cle,val){try{localStorage.setItem(cle,JSON.stringify(val))}catch(e){}}
+function afficher(){
+  var s=lire('seances',[]);
+  var t=0;s.forEach(function(x){t+=x.min});
+  document.getElementById('total').textContent=s.length+' séance(s), '+t+' minutes';
+  document.getElementById('historique').innerHTML=s.slice().reverse().map(function(x){
+    return '<div class="card"><h3>'+x.type+'</h3>'+x.min+' min – '+x.date+'</div>'}).join('');
+}
+function ajouter(){
+  var m=parseInt(document.getElementById('minutes').value);
+  if(!m||m<1){alert('Entre une durée valide');return}
+  var s=lire('seances',[]);
+  s.push({type:document.getElementById('type').value,min:m,date:new Date().toLocaleDateString('fr-FR')});
+  ecrire('seances',s);
+  document.getElementById('minutes').value='';
+  afficher();
+}
+function effacer(){if(confirm('Tout effacer ?')){ecrire('seances',[]);afficher()}}
+function fiche(){
+  var p=lire('profil',null);
+  document.getElementById('fiche').innerHTML=p?('<h3>'+p.nom+'</h3>Poste : '+p.poste+'<br>Niveau : '+p.niveau):'Aucun profil enregistré.';
+}
+function sauverProfil(){
+  ecrire('profil',{nom:document.getElementById('nom').value||'Joueur',poste:document.getElementById('poste').value,niveau:document.getElementById('niveau').value||'débutant'});
+  fiche();
+}
+afficher();fiche();
+</script>
+</body>
+  </html>
